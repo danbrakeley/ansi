@@ -3,6 +3,8 @@ package ansi
 import (
 	"strings"
 	"testing"
+
+	"github.com/danbrakeley/ansi/sgr"
 )
 
 func Test_CropPreservingANSI(t *testing.T) {
@@ -16,9 +18,9 @@ func Test_CropPreservingANSI(t *testing.T) {
 		{"unicode", "༼ つ ◕_◕ ༽つ", 7, "༼ つ ◕_◕"},
 		{
 			"colors",
-			SGR(FgRed, BgDarkGreen) + "Hello, World!" + SGR(Reset),
+			SGR(sgr.FgRed, sgr.BgDarkGreen) + "Hello, World!" + Reset,
 			10,
-			SGR(FgRed, BgDarkGreen) + "Hello, Wor" + SGR(Reset)},
+			SGR(sgr.FgRed, sgr.BgDarkGreen) + "Hello, Wor" + Reset},
 		{
 			"everything",
 			TopLeft + LeftMost + BottomRight + PosSave + PosRestore + EraseEOL + EraseSOL + EraseLine +
@@ -26,14 +28,14 @@ func Test_CropPreservingANSI(t *testing.T) {
 				EraseDown + EraseUp + EraseScreen + ShowCursor + HideCursor + GetCursorPos +
 				"©🦀💨✔" +
 				Up(100) + Down(2) + Left(9999) + Right(51) + NextLine(10) + PrevLine(800) +
-				SGR(FgDarkRed, BgWhite, Bold, Underline, Reverse) + "nice" + SGR(Reset),
+				SGR(sgr.FgDarkRed, sgr.BgWhite, sgr.Bold, sgr.Underline, sgr.Reverse) + "nice" + Reset,
 			17,
 			TopLeft + LeftMost + BottomRight + PosSave + PosRestore + EraseEOL + EraseSOL + EraseLine +
 				"Some legit text" +
 				EraseDown + EraseUp + EraseScreen + ShowCursor + HideCursor + GetCursorPos +
 				"©🦀" +
 				Up(100) + Down(2) + Left(9999) + Right(51) + NextLine(10) + PrevLine(800) +
-				SGR(FgDarkRed, BgWhite, Bold, Underline, Reverse) + SGR(Reset),
+				SGR(sgr.FgDarkRed, sgr.BgWhite, sgr.Bold, sgr.Underline, sgr.Reverse) + Reset,
 		},
 		// TODO: The following case is not handled properly because it uses diacritics that combine
 		// multiple code points into a single grapheme.

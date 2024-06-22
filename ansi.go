@@ -3,6 +3,8 @@ package ansi
 import (
 	"fmt"
 	"strings"
+
+	"github.com/danbrakeley/ansi/sgr"
 )
 
 // Useful references:
@@ -73,51 +75,9 @@ func PrevLine(n int) string {
 	return fmt.Sprintf(CSI+"%dF", n)
 }
 
-const (
-	Reset         = "0"
-	Bold          = "1"
-	Underline     = "4"
-	Reverse       = "7"
-	UnderlineOff  = "24"
-	ReverseOff    = "27"
-	FgBlack       = "30"
-	FgDarkRed     = "31"
-	FgDarkGreen   = "32"
-	FgDarkYellow  = "33"
-	FgDarkBlue    = "34"
-	FgDarkMagenta = "35"
-	FgDarkCyan    = "36"
-	FgLightGray   = "37"
-	FgReset       = "39" // sets foreground color to default
-	BgBlack       = "40"
-	BgDarkRed     = "41"
-	BgDarkGreen   = "42"
-	BgDarkYellow  = "43"
-	BgDarkBlue    = "44"
-	BgDarkMagenta = "45"
-	BgDarkCyan    = "46"
-	BgLightGray   = "47"
-	BgReset       = "49" // sets background color to default
-	FgDarkGray    = "90"
-	FgRed         = "91"
-	FgGreen       = "92"
-	FgYellow      = "93"
-	FgBlue        = "94"
-	FgMagenta     = "95"
-	FgCyan        = "96"
-	FgWhite       = "97"
-	BgDarkGray    = "100"
-	BgRed         = "101"
-	BgGreen       = "102"
-	BgYellow      = "103"
-	BgBlue        = "104"
-	BgMagenta     = "105"
-	BgCyan        = "106"
-	BgWhite       = "107"
-)
-
-// SGR applies the above sgr params in the order specified (later commands may override earlier commands)
-func SGR(params ...string) string {
+// SGR applies the sgr params (found in the sgr package) in the order specified
+// (later commands may override earlier commands)
+func SGR(params ...sgr.SGR) string {
 	var sb strings.Builder
 	sb.Grow(len(params)*4 + 2) // worst case: n 3-char params, n-1 semicolons, <esc>, '[', and 'm'
 	sb.WriteString(CSI)
@@ -130,3 +90,47 @@ func SGR(params ...string) string {
 	sb.WriteRune('m')
 	return sb.String()
 }
+
+// stand alone values to shortcut calling SGR when you only have one argument
+const (
+	Reset         = CSI + string(sgr.Reset) + "m"
+	Bold          = CSI + string(sgr.Bold) + "m"
+	Underline     = CSI + string(sgr.Underline) + "m"
+	Reverse       = CSI + string(sgr.Reverse) + "m"
+	UnderlineOff  = CSI + string(sgr.UnderlineOff) + "m"
+	ReverseOff    = CSI + string(sgr.ReverseOff) + "m"
+	FgBlack       = CSI + string(sgr.FgBlack) + "m"
+	FgDarkRed     = CSI + string(sgr.FgDarkRed) + "m"
+	FgDarkGreen   = CSI + string(sgr.FgDarkGreen) + "m"
+	FgDarkYellow  = CSI + string(sgr.FgDarkYellow) + "m"
+	FgDarkBlue    = CSI + string(sgr.FgDarkBlue) + "m"
+	FgDarkMagenta = CSI + string(sgr.FgDarkMagenta) + "m"
+	FgDarkCyan    = CSI + string(sgr.FgDarkCyan) + "m"
+	FgLightGray   = CSI + string(sgr.FgLightGray) + "m"
+	FgReset       = CSI + string(sgr.FgReset) + "m"
+	BgBlack       = CSI + string(sgr.BgBlack) + "m"
+	BgDarkRed     = CSI + string(sgr.BgDarkRed) + "m"
+	BgDarkGreen   = CSI + string(sgr.BgDarkGreen) + "m"
+	BgDarkYellow  = CSI + string(sgr.BgDarkYellow) + "m"
+	BgDarkBlue    = CSI + string(sgr.BgDarkBlue) + "m"
+	BgDarkMagenta = CSI + string(sgr.BgDarkMagenta) + "m"
+	BgDarkCyan    = CSI + string(sgr.BgDarkCyan) + "m"
+	BgLightGray   = CSI + string(sgr.BgLightGray) + "m"
+	BgReset       = CSI + string(sgr.BgReset) + "m"
+	FgDarkGray    = CSI + string(sgr.FgDarkGray) + "m"
+	FgRed         = CSI + string(sgr.FgRed) + "m"
+	FgGreen       = CSI + string(sgr.FgGreen) + "m"
+	FgYellow      = CSI + string(sgr.FgYellow) + "m"
+	FgBlue        = CSI + string(sgr.FgBlue) + "m"
+	FgMagenta     = CSI + string(sgr.FgMagenta) + "m"
+	FgCyan        = CSI + string(sgr.FgCyan) + "m"
+	FgWhite       = CSI + string(sgr.FgWhite) + "m"
+	BgDarkGray    = CSI + string(sgr.BgDarkGray) + "m"
+	BgRed         = CSI + string(sgr.BgRed) + "m"
+	BgGreen       = CSI + string(sgr.BgGreen) + "m"
+	BgYellow      = CSI + string(sgr.BgYellow) + "m"
+	BgBlue        = CSI + string(sgr.BgBlue) + "m"
+	BgMagenta     = CSI + string(sgr.BgMagenta) + "m"
+	BgCyan        = CSI + string(sgr.BgCyan) + "m"
+	BgWhite       = CSI + string(sgr.BgWhite) + "m"
+)
